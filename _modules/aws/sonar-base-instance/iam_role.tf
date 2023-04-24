@@ -54,22 +54,22 @@ locals {
 }
 
 resource "aws_iam_instance_profile" "dsf_node_instance_iam_profile" {
-  name_prefix = "dsf-${var.resource_type}-instance-iam-profile"
+  name_prefix = "${var.name}-${var.resource_type}-instance-iam-profile"
   role        = local.role_name
 }
 
 resource "aws_iam_role" "dsf_node_role" {
   count               = var.role_arn != null ? 0 : 1
-  name_prefix         = "imperva-dsf-${var.resource_type}-role"
-  description         = "imperva-dsf-${var.resource_type}-role-${var.name}"
+  name_prefix         = "${var.name}-${var.resource_type}-role"
+  description         = "${var.name}-${var.resource_type}-role-${var.name}"
   managed_policy_arns = null
   assume_role_policy  = local.role_assume_role_policy
   inline_policy {
-    name   = "imperva-dsf-s3-access"
+    name   = "${var.name}-s3-access"
     policy = local.inline_policy_s3
   }
   inline_policy {
-    name   = "imperva-dsf-secret-access"
+    name   = "${var.name}-secret-access"
     policy = local.inline_policy_secret
   }
 }
